@@ -33,19 +33,19 @@ public class LeapGesture : MonoBehaviour
 
 	public void CalculateHandAngle ()
 	{
-		var prevFrame = m_leapController.Frame (10); 
+		var prevFrame = m_leapController.Frame (30); 
 		
 		float rotationX = _frame.RotationAngle (prevFrame, Vector.XAxis);
 		float rotationY = _frame.RotationAngle (prevFrame, Vector.YAxis);
 		float rotationZ = _frame.RotationAngle (prevFrame, Vector.ZAxis);
 
-		Debug.Log ("rotation Y" + rotationY);
+//		Debug.Log ("rotation Y" + rotationY);
 		
 		degreeX = ToDegrees (rotationX);
 		degreeY = ToDegrees (rotationY);
 		degreeZ = ToDegrees (rotationZ);
 //		
-		Debug.Log ("X DEGREE: " + degreeX);
+//		Debug.Log ("X DEGREE: " + degreeX);
 //		Debug.Log ("Y DEGREE: " + degreeY);
 //		Debug.Log ("Z DEGREE: " + degreeZ);
 	}
@@ -61,46 +61,51 @@ public class LeapGesture : MonoBehaviour
 		rollDegrees = ToDegrees (roll);
 		
 		//Debug.Log ("Pitch: " + pitchDegrees);
-//		Debug.Log ("Yaw: " + yawDegrees);
-//		Debug.Log ("Roll: " + rollDegrees);
+		//Debug.Log ("Yaw: " + yawDegrees);
+		//Debug.Log ("Roll: " + rollDegrees);
 	}
 
 	public void HandPlayerMovement (Frame frame, Hand hand, Controller controller)
 	{
 		_frame = frame;
 		MovementType type;
-	
-	
-		//type = MovementType.stand;
-	
+
 		HandRotation (hand);
 		CalculateHandAngle ();
 
 		//Hand rotation for left/right movement below:
 
-		type = MovementType.stand;
-		movement.CheckMovementType (type, true);
-		
-		if (rollDegrees >= 30) {
+		if (rollDegrees >= 80) {
 			type = MovementType.walk;
 			movement.CheckMovementType (type, true);
 //			Debug.Log("moving right");
 		} else
-			if (rollDegrees <= -30) {
+			if (rollDegrees <= -80) {
 			type = MovementType.walk;
 			movement.CheckMovementType (type, false);
 //			Debug.Log("moving left");
 		} else
-			if (rollDegrees > -30 || rollDegrees < 30) {
+			if (rollDegrees >= -70 || rollDegrees <= 70) {
 			//get faceRight state, use for standing CheckMovementType() method
-//			type = MovementType.stand;
-//			movement.CheckMovementType (type, movement.getfaceRight);
+			type = MovementType.stand;
+			movement.CheckMovementType (type, movement.getfaceRight);
 //			Debug.Log("standing");
 		}
 
 		//pseudocode:
 		//compare DegreeX to previous X every second or millisecond
 		//
+	}
+
+	void flying(MovementType type, float yawAngle, float pitchAngle){
+
+		//need to pass in pitchAngle 
+
+		if (yawAngle >= 60 && yawAngle <= 120)
+			movement.CheckMovementType (type, true);
+		else
+			if(yawAngle <= -60 && yawAngle >= -120)
+				movement.CheckMovementType (type, false);
 	}
 	
 	float ToDegrees (float Radian)

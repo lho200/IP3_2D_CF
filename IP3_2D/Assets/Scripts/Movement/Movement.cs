@@ -44,6 +44,9 @@ public class Movement : MonoBehaviour {
 
 		//Movement related below (will make more complex later):
 
+		if(type == MovementType.stand)
+			transform.parent.rigidbody.velocity = new Vector3 (0, 0, 0);
+
 		if (type == MovementType.walk && faceRight) {
 			Debug.Log ("walk right");
 			transform.parent.rigidbody.velocity = new Vector3 (walkSpeed, 0, 0);
@@ -56,10 +59,11 @@ public class Movement : MonoBehaviour {
 		if (type == MovementType.run && faceRight) {
 			Debug.Log ("run right");
 			transform.parent.rigidbody.velocity = new Vector3 (runSpeed, 0, 0);
-		} else {
+		} else 
+			if(type == MovementType.run && !faceRight){
 			Debug.Log("run left");
 			//transform.parent.rigidbody.velocity = new Vector3 (-runSpeed, 0, 0);
-		}
+			}
 
 		if (type == MovementType.jump && faceRight) {
 			Debug.Log("jump");
@@ -70,6 +74,7 @@ public class Movement : MonoBehaviour {
 			Debug.Log ("fly jump up");
 			//transform.parent.rigidbody.velocity = new Vector3 (0, jumpPower, 0);
 		} else {
+			if(type == MovementType.fly && !faceRight)
 			Debug.Log("fly jump down");
 			//transform.parent.rigidbody.velocity = new Vector3 (0, fallPower, 0);
 		}
