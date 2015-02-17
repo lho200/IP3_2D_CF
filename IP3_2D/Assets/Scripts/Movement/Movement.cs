@@ -17,9 +17,10 @@ public class Movement : MonoBehaviour {
 	public float flySpeed = 3.0f;
 	public float jumpPower = 1.0f;
 	public float fallPower = 1.0f;
-	public float rotationSpeed = 1.0f;
+	public float rotationSpeed = 0.5f;
 	
 	public bool getfaceRight { get; set; }
+	public float getPitchAngle { get; set; }
 	
 	// Use this for initialization
 	void Start () {
@@ -72,7 +73,10 @@ public class Movement : MonoBehaviour {
 
 		if (type == MovementType.fly && faceRight) {
 			Debug.Log ("fly jump up");
-			//transform.parent.rigidbody.velocity = new Vector3 (0, jumpPower, 0);
+
+			transform.parent.rigidbody.velocity = new Vector3 (2, 0, 0);
+			float rot = getPitchAngle * rotationSpeed;
+			transform.parent.rotation = Quaternion.Euler(new Vector3 (0, 0, rot));
 		} else {
 			if(type == MovementType.fly && !faceRight)
 			Debug.Log("fly jump down");

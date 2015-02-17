@@ -60,7 +60,7 @@ public class LeapGesture : MonoBehaviour
 		yawDegrees = ToDegrees (yaw);
 		rollDegrees = ToDegrees (roll);
 		
-		//Debug.Log ("Pitch: " + pitchDegrees);
+		Debug.Log ("Pitch: " + pitchDegrees);
 		//Debug.Log ("Yaw: " + yawDegrees);
 		//Debug.Log ("Roll: " + rollDegrees);
 	}
@@ -78,18 +78,26 @@ public class LeapGesture : MonoBehaviour
 		if (rollDegrees >= 80) {
 			type = MovementType.walk;
 			movement.CheckMovementType (type, true);
-//			Debug.Log("moving right");
 		} else
 			if (rollDegrees <= -80) {
 			type = MovementType.walk;
 			movement.CheckMovementType (type, false);
-//			Debug.Log("moving left");
 		} else
 			if (rollDegrees >= -70 || rollDegrees <= 70) {
-			//get faceRight state, use for standing CheckMovementType() method
 			type = MovementType.stand;
 			movement.CheckMovementType (type, movement.getfaceRight);
-//			Debug.Log("standing");
+		}
+		//Flying code: 
+
+		if (yawDegrees >= 60 && yawDegrees <= 120) {
+			type = MovementType.fly;
+			movement.getPitchAngle = pitchDegrees;
+			movement.CheckMovementType (type, true);
+		} else
+			if (yawDegrees <= -60 && yawDegrees >= -120) {
+			type = MovementType.fly;
+			movement.CheckMovementType (type, false);
+			movement.getPitchAngle = pitchDegrees;
 		}
 
 		//pseudocode:
