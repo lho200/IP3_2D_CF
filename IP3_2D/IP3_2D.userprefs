@@ -1,10 +1,11 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Movement\Movement.cs">
     <Files>
-      <File FileName="Assets\Scripts\Movement\Movement.cs" Line="79" Column="74" />
-      <File FileName="Assets\Scripts\LeapGesture.cs" Line="63" Column="3" />
+      <File FileName="Assets\Scripts\Movement\Movement.cs" Line="87" Column="21" />
+      <File FileName="Assets\Scripts\LeapGesture.cs" Line="36" Column="44" />
       <File FileName="Assets\Scripts\testFly.cs" Line="72" Column="6" />
+      <File FileName="c:\Users\Callum\Desktop\IP3_2D_CF\IP3_2D\Assets\Scripts\Leapmotion\HandController.cs" Line="104" Column="53" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">

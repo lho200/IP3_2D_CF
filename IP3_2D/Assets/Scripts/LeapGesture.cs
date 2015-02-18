@@ -33,7 +33,7 @@ public class LeapGesture : MonoBehaviour
 
 	public void CalculateHandAngle ()
 	{
-		var prevFrame = m_leapController.Frame (30); 
+		var prevFrame = m_leapController.Frame (1); 
 		
 		float rotationX = _frame.RotationAngle (prevFrame, Vector.XAxis);
 		float rotationY = _frame.RotationAngle (prevFrame, Vector.YAxis);
@@ -52,6 +52,9 @@ public class LeapGesture : MonoBehaviour
 
 	void HandRotation (Hand hand)
 	{
+		//The normal vector to the palm.
+		//If your hand is flat, this vector will point downward, or “out” of the front surface of your palm.
+
 		float pitch = hand.Direction.Pitch;
 		float yaw = hand.Direction.Yaw;
 		float roll = hand.Direction.Roll;

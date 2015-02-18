@@ -1,16 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public enum MovementType{
+public enum MovementType
+{
 	stand,
 	walk,
 	run,
 	jump,
 	fall,
 	fly
-};
+}
+;
 
-public class Movement : MonoBehaviour {
+public class Movement : MonoBehaviour
+{
 	
 	public float walkSpeed = 1.0f;
 	public float runSpeed = 2.0f;
@@ -20,18 +23,22 @@ public class Movement : MonoBehaviour {
 	public float rotationSpeed = 0.5f;
 	
 	public bool getfaceRight { get; set; }
+
 	public float getPitchAngle { get; set; }
 	
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 
 	}
 
-	public void CheckMovementType(MovementType type, bool faceRight = true){
+	public void CheckMovementType (MovementType type, bool faceRight = true)
+	{
 
 		//Change 2D face direction to right/left
 		getfaceRight = faceRight;
@@ -39,21 +46,21 @@ public class Movement : MonoBehaviour {
 		Debug.Log ("Type: " + type);
 
 		if (faceRight)
-			transform.localScale =  new Vector3 (1f, 1f, 1f); //need to add code so it doesn't constantly access this
+			transform.localScale = new Vector3 (1f, 1f, 1f); //need to add code so it doesn't constantly access this
 		else
-			transform.localScale =  new Vector3 (-1f, 1f, 1f);
+			transform.localScale = new Vector3 (-1f, 1f, 1f);
 
 		//Movement related below (will make more complex later):
 
-		if(type == MovementType.stand)
+		if (type == MovementType.stand)
 			transform.parent.rigidbody.velocity = new Vector3 (0, 0, 0);
 
 		if (type == MovementType.walk && faceRight) {
 			Debug.Log ("walk right");
 			transform.parent.rigidbody.velocity = new Vector3 (walkSpeed, 0, 0);
 		} else
-			if(type == MovementType.walk && !faceRight){
-			Debug.Log("walk left");
+			if (type == MovementType.walk && !faceRight) {
+			Debug.Log ("walk left");
 			transform.parent.rigidbody.velocity = new Vector3 (-walkSpeed, 0, 0);
 		}
 
@@ -61,13 +68,13 @@ public class Movement : MonoBehaviour {
 			Debug.Log ("run right");
 			transform.parent.rigidbody.velocity = new Vector3 (runSpeed, 0, 0);
 		} else 
-			if(type == MovementType.run && !faceRight){
-			Debug.Log("run left");
+			if (type == MovementType.run && !faceRight) {
+			Debug.Log ("run left");
 			//transform.parent.rigidbody.velocity = new Vector3 (-runSpeed, 0, 0);
-			}
+		}
 
 		if (type == MovementType.jump && faceRight) {
-			Debug.Log("jump");
+			Debug.Log ("jump");
 			//transform.parent.rigidbody.velocity = new Vector3 (0, jumpPower, 0);
 		}
 
@@ -76,11 +83,52 @@ public class Movement : MonoBehaviour {
 
 			transform.parent.rigidbody.velocity = new Vector3 (2, 0, 0);
 			float rot = getPitchAngle * rotationSpeed;
-			transform.parent.rotation = Quaternion.Euler(new Vector3 (0, 0, rot));
+			transform.parent.rotation = Quaternion.Euler (new Vector3 (0, 0, rot));
+			transform.parent.position += transform.forward * Time.deltaTime * walkSpeed;
 		} else {
-			if(type == MovementType.fly && !faceRight)
-			Debug.Log("fly jump down");
+			if (type == MovementType.fly && !faceRight)
+				Debug.Log ("fly jump down");
 			//transform.parent.rigidbody.velocity = new Vector3 (0, fallPower, 0);
+		}
+	}
+
+	void test (MovementType type, bool faceRight)
+	{
+		switch (type) {
+
+		case MovementType.stand:
+			transform.parent.rigidbody.velocity = new Vector3 (0, 0, 0);
+			break;
+		
+		case MovementType.walk:
+			if (faceRight)
+				transform.parent.rigidbody.velocity = new Vector3 (walkSpeed, 0, 0);
+			else
+				transform.parent.rigidbody.velocity = new Vector3 (-walkSpeed, 0, 0);
+			break;
+
+		case MovementType.run:
+			if (faceRight)
+				transform.parent.rigidbody.velocity = new Vector3 (runSpeed, 0, 0);
+			else 
+				transform.parent.rigidbody.velocity = new Vector3 (-runSpeed, 0, 0);
+			break;
+
+		case MovementType.jump:
+			if (faceRight)
+				transform.parent.rigidbody.velocity = new Vector3 (0, jumpPower, 0);
+			break;
+
+		case MovementType.fly: 
+			if (faceRight) {
+
+				transform.parent.rigidbody.velocity = new Vector3 (2, 0, 0);
+				float rot = getPitchAngle * rotationSpeed;
+				transform.parent.rotation = Quaternion.Euler (new Vector3 (0, 0, rot));
+			} else {
+				//transform.parent.rigidbody.velocity = new Vector3 (0, fallPower, 0);
+			}
+			break;
 		}
 	}
 }
