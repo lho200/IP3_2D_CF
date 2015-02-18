@@ -68,23 +68,47 @@ public class testFly : MonoBehaviour
 		Hand leftHand = GetLeftMostHand (frame);
 		Hand rightHand = GetRightMostHand (frame);
 
-		if(m_leapController.IsConnected) {
+		Hand hand = frame.Hands.Leftmost;
+
+		HandList hList = frame.Hands;
+
+
+		if (hList [1].IsLeft)
+			Debug.Log ("LEFT");
+
+		if (hList [0].IsRight)
+			Debug.Log ("RIGHT");
+
+		//NOTE: IF using right hand for flying Angles will be WEIRD
+		//NOTE: Flip your right hand upside down confuses it for LEFT!
+
+		if (m_leapController.IsConnected) {
 			Debug.Log ("CONNECTED");
 
-			if (rightHand != null){ //if hand is not over LeapMotion == null
-				gesture._frame = frame;
-				gesture.m_leapController = m_leapController;
-				gesture.HandPlayerMovement (frame, rightHand, m_leapController);
+			if(hList.IsEmpty)
+				Debug.Log ("HAND LIST EMPTY");
+
+			Debug.Log(hList.Count);
+
+
+
+			gesture._frame = frame;
+			gesture.m_leapController = m_leapController;
+
+			if (rightHand.IsRight && rightHand != null) { //if hand is not over LeapMotion == null
+			
+				//gesture.HandPlayerMovement (frame, rightHand, m_leapController);
 			}
+
+			if(leftHand.IsLeft && leftHand != null){
+
+			}
+
+
+		} else {
+
+			//not connected -- pause game -- await connection
 		}
-
-
-
-
-//		CalculateHandAngle (frame);
-//		HandRotation (frame);
-
-
 
 	
 		//if we have 1 hand active

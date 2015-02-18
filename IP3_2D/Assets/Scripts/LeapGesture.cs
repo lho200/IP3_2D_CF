@@ -39,12 +39,10 @@ public class LeapGesture : MonoBehaviour
 		float rotationY = _frame.RotationAngle (prevFrame, Vector.YAxis);
 		float rotationZ = _frame.RotationAngle (prevFrame, Vector.ZAxis);
 
-//		Debug.Log ("rotation Y" + rotationY);
-		
 		degreeX = ToDegrees (rotationX);
 		degreeY = ToDegrees (rotationY);
 		degreeZ = ToDegrees (rotationZ);
-//		
+	
 //		Debug.Log ("X DEGREE: " + degreeX);
 //		Debug.Log ("Y DEGREE: " + degreeY);
 //		Debug.Log ("Z DEGREE: " + degreeZ);
@@ -55,17 +53,18 @@ public class LeapGesture : MonoBehaviour
 		//The normal vector to the palm.
 		//If your hand is flat, this vector will point downward, or “out” of the front surface of your palm.
 
+
 		float pitch = hand.Direction.Pitch;
 		float yaw = hand.Direction.Yaw;
 		float roll = hand.Direction.Roll;
-		
+
 		pitchDegrees = ToDegrees (pitch);
 		yawDegrees = ToDegrees (yaw);
 		rollDegrees = ToDegrees (roll);
 		
 		Debug.Log ("Pitch: " + pitchDegrees);
-		//Debug.Log ("Yaw: " + yawDegrees);
-		//Debug.Log ("Roll: " + rollDegrees);
+		Debug.Log ("Yaw: " + yawDegrees);
+		Debug.Log ("Roll: " + rollDegrees);
 	}
 
 	public void HandPlayerMovement (Frame frame, Hand hand, Controller controller)
@@ -90,6 +89,9 @@ public class LeapGesture : MonoBehaviour
 			type = MovementType.stand;
 			movement.CheckMovementType (type, movement.getfaceRight);
 		}
+
+		//Jump code:
+
 		//Flying code: 
 
 		if (yawDegrees >= 60 && yawDegrees <= 120) {
@@ -100,23 +102,8 @@ public class LeapGesture : MonoBehaviour
 			if (yawDegrees <= -60 && yawDegrees >= -120) {
 			type = MovementType.fly;
 			movement.CheckMovementType (type, false);
-			movement.getPitchAngle = pitchDegrees;
+			movement.getPitchAngle = pitchDegrees * -1;
 		}
-
-		//pseudocode:
-		//compare DegreeX to previous X every second or millisecond
-		//
-	}
-
-	void flying(MovementType type, float yawAngle, float pitchAngle){
-
-		//need to pass in pitchAngle 
-
-		if (yawAngle >= 60 && yawAngle <= 120)
-			movement.CheckMovementType (type, true);
-		else
-			if(yawAngle <= -60 && yawAngle >= -120)
-				movement.CheckMovementType (type, false);
 	}
 	
 	float ToDegrees (float Radian)

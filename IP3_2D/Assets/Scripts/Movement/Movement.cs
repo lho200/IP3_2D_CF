@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Leap;
 
 public enum MovementType
 {
@@ -21,9 +22,10 @@ public class Movement : MonoBehaviour
 	public float jumpPower = 1.0f;
 	public float fallPower = 1.0f;
 	public float rotationSpeed = 0.5f;
-	
-	public bool getfaceRight { get; set; }
 
+	[HideInInspector]
+	public bool getfaceRight { get; set; }
+	[HideInInspector]
 	public float getPitchAngle { get; set; }
 	
 	// Use this for initialization
@@ -36,64 +38,25 @@ public class Movement : MonoBehaviour
 	{
 
 	}
-
-	public void CheckMovementType (MovementType type, bool faceRight = true)
+	
+	public void CheckMovementType (MovementType type, bool faceRight)
 	{
-
 		//Change 2D face direction to right/left
 		getfaceRight = faceRight;
-
+		
 		Debug.Log ("Type: " + type);
-
-		if (faceRight)
-			transform.localScale = new Vector3 (1f, 1f, 1f); //need to add code so it doesn't constantly access this
-		else
+		
+		if (faceRight) { 
+			Debug.Log ("FACERIGHT");
+			transform.localScale = new Vector3 (1f, 1f, 1f); 
+		}
+		else {
+			Debug.Log("NOT FACERIGHT");
 			transform.localScale = new Vector3 (-1f, 1f, 1f);
-
+		}
+		
 		//Movement related below (will make more complex later):
 
-		if (type == MovementType.stand)
-			transform.parent.rigidbody.velocity = new Vector3 (0, 0, 0);
-
-		if (type == MovementType.walk && faceRight) {
-			Debug.Log ("walk right");
-			transform.parent.rigidbody.velocity = new Vector3 (walkSpeed, 0, 0);
-		} else
-			if (type == MovementType.walk && !faceRight) {
-			Debug.Log ("walk left");
-			transform.parent.rigidbody.velocity = new Vector3 (-walkSpeed, 0, 0);
-		}
-
-		if (type == MovementType.run && faceRight) {
-			Debug.Log ("run right");
-			transform.parent.rigidbody.velocity = new Vector3 (runSpeed, 0, 0);
-		} else 
-			if (type == MovementType.run && !faceRight) {
-			Debug.Log ("run left");
-			//transform.parent.rigidbody.velocity = new Vector3 (-runSpeed, 0, 0);
-		}
-
-		if (type == MovementType.jump && faceRight) {
-			Debug.Log ("jump");
-			//transform.parent.rigidbody.velocity = new Vector3 (0, jumpPower, 0);
-		}
-
-		if (type == MovementType.fly && faceRight) {
-			Debug.Log ("fly jump up");
-
-			transform.parent.rigidbody.velocity = new Vector3 (2, 0, 0);
-			float rot = getPitchAngle * rotationSpeed;
-			transform.parent.rotation = Quaternion.Euler (new Vector3 (0, 0, rot));
-			transform.parent.position += transform.forward * Time.deltaTime * walkSpeed;
-		} else {
-			if (type == MovementType.fly && !faceRight)
-				Debug.Log ("fly jump down");
-			//transform.parent.rigidbody.velocity = new Vector3 (0, fallPower, 0);
-		}
-	}
-
-	void test (MovementType type, bool faceRight)
-	{
 		switch (type) {
 
 		case MovementType.stand:
@@ -121,12 +84,17 @@ public class Movement : MonoBehaviour
 
 		case MovementType.fly: 
 			if (faceRight) {
-
 				transform.parent.rigidbody.velocity = new Vector3 (2, 0, 0);
 				float rot = getPitchAngle * rotationSpeed;
+
 				transform.parent.rotation = Quaternion.Euler (new Vector3 (0, 0, rot));
+				transform.parent.position += transform.right * Time.deltaTime * flySpeed;
 			} else {
-				//transform.parent.rigidbody.velocity = new Vector3 (0, fallPower, 0);
+				transform.parent.rigidbody.velocity = new Vector3 (2, 0, 0);
+				float rot = getPitchAngle * rotationSpeed;
+
+				transform.parent.rotation = Quaternion.Euler (new Vector3 (0, 0, rot));
+				transform.parent.position -= transform.right * Time.deltaTime * flySpeed;
 			}
 			break;
 		}

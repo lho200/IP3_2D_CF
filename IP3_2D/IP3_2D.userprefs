@@ -1,22 +1,22 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Movement\Movement.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\testFly.cs">
     <Files>
-      <File FileName="Assets\Scripts\Movement\Movement.cs" Line="87" Column="21" />
-      <File FileName="Assets\Scripts\LeapGesture.cs" Line="36" Column="44" />
-      <File FileName="Assets\Scripts\testFly.cs" Line="72" Column="6" />
-      <File FileName="c:\Users\Callum\Desktop\IP3_2D_CF\IP3_2D\Assets\Scripts\Leapmotion\HandController.cs" Line="104" Column="53" />
+      <File FileName="Assets\Scripts\Movement\Movement.cs" Line="89" Column="5" />
+      <File FileName="Assets\Scripts\LeapGesture.cs" Line="66" Column="18" />
+      <File FileName="Assets\Scripts\testFly.cs" Line="76" Column="15" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Assembly-CSharp" expanded="True">
             <Node name="Scripts" expanded="True">
-              <Node name="Leapmotion" expanded="True" />
-              <Node name="Movement" expanded="True">
-                <Node name="Movement.cs" selected="True" />
+              <Node name="Leapmotion" expanded="True">
+                <Node name="Utils" expanded="True" />
               </Node>
+              <Node name="Movement" expanded="True" />
               <Node name="World" expanded="True" />
+              <Node name="testFly.cs" selected="True" />
             </Node>
           </Node>
         </State>
