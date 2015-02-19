@@ -1,10 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\testFly.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Movement\Movement.cs">
     <Files>
-      <File FileName="Assets\Scripts\Movement\Movement.cs" Line="89" Column="5" />
-      <File FileName="Assets\Scripts\LeapGesture.cs" Line="66" Column="18" />
-      <File FileName="Assets\Scripts\testFly.cs" Line="76" Column="15" />
+      <File FileName="Assets\Scripts\Movement\Movement.cs" Line="61" Column="37" />
+      <File FileName="Assets\Scripts\LeapGesture.cs" Line="95" Column="52" />
+      <File FileName="Assets\Scripts\testFly.cs" Line="93" Column="28" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -14,9 +14,10 @@
               <Node name="Leapmotion" expanded="True">
                 <Node name="Utils" expanded="True" />
               </Node>
-              <Node name="Movement" expanded="True" />
+              <Node name="Movement" expanded="True">
+                <Node name="Movement.cs" selected="True" />
+              </Node>
               <Node name="World" expanded="True" />
-              <Node name="testFly.cs" selected="True" />
             </Node>
           </Node>
         </State>

@@ -6,15 +6,19 @@ public class LeapGesture : MonoBehaviour
 {
 
 	public float degreeX { get; set; }
+
 	public float degreeY { get; set; }
+
 	public float degreeZ { get; set; }
 	
 	public float pitchDegrees { get; set; }
-	public float yawDegrees { get; set; }
-	public float rollDegrees { get; set; }
 
+	public float yawDegrees { get; set; }
+
+	public float rollDegrees { get; set; }
 	
 	public Frame _frame { get; set; }
+
 	public Controller m_leapController { get; set; }
 
 	private Movement movement;
@@ -22,7 +26,7 @@ public class LeapGesture : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		movement = gameObject.AddComponent<Movement>();
+		movement = gameObject.AddComponent<Movement> ();
 	}
 	
 	// Update is called once per frame
@@ -62,9 +66,9 @@ public class LeapGesture : MonoBehaviour
 		yawDegrees = ToDegrees (yaw);
 		rollDegrees = ToDegrees (roll);
 		
-		Debug.Log ("Pitch: " + pitchDegrees);
-		Debug.Log ("Yaw: " + yawDegrees);
-		Debug.Log ("Roll: " + rollDegrees);
+//		Debug.Log ("Pitch: " + pitchDegrees);
+//		Debug.Log ("Yaw: " + yawDegrees);
+//		Debug.Log ("Roll: " + rollDegrees);
 	}
 
 	public void HandPlayerMovement (Frame frame, Hand hand, Controller controller)
@@ -77,6 +81,9 @@ public class LeapGesture : MonoBehaviour
 
 		//Hand rotation for left/right movement below:
 
+		//if(yawDegrees <= 50 && yawDegrees >= -30)
+		
+
 		if (rollDegrees >= 80) {
 			type = MovementType.walk;
 			movement.CheckMovementType (type, true);
@@ -85,21 +92,25 @@ public class LeapGesture : MonoBehaviour
 			type = MovementType.walk;
 			movement.CheckMovementType (type, false);
 		} else
-			if (rollDegrees >= -70 || rollDegrees <= 70) {
+			if (rollDegrees >= -70 || rollDegrees <= 70 || !hand.IsValid) {
 			type = MovementType.stand;
 			movement.CheckMovementType (type, movement.getfaceRight);
 		}
-
+	
 		//Jump code:
 
 		//Flying code: 
 
+		if (hand.IsLeft)
 		if (yawDegrees >= 60 && yawDegrees <= 120) {
 			type = MovementType.fly;
 			movement.getPitchAngle = pitchDegrees;
 			movement.CheckMovementType (type, true);
-		} else
-			if (yawDegrees <= -60 && yawDegrees >= -120) {
+		}
+
+		if (hand.IsRight)
+		if (yawDegrees <= -60 && yawDegrees >= -120) {
+			Debug.Log ("left fly hit");
 			type = MovementType.fly;
 			movement.CheckMovementType (type, false);
 			movement.getPitchAngle = pitchDegrees * -1;
