@@ -9,7 +9,9 @@ public enum MovementType
 	run,
 	jump,
 	fall,
-	fly
+	fly,
+	flyAscend,
+	flyDescend
 }
 ;
 
@@ -18,7 +20,7 @@ public class Movement : MonoBehaviour
 	
 	public float walkSpeed = 1.0f;
 	public float runSpeed = 2.0f;
-	public float flySpeed = 3.0f;
+	public float flySpeed = 15.0f;
 	public float jumpPower = 1.0f;
 	public float fallPower = 1.0f;
 	public float rotationSpeed = 0.5f;
@@ -29,6 +31,7 @@ public class Movement : MonoBehaviour
 	[HideInInspector]
 	public float getPitchAngle { get; set; }
 
+	[HideInInspector]
 	private float speed = 0.3f;
 	
 	// Use this for initialization
@@ -93,7 +96,7 @@ public class Movement : MonoBehaviour
 		
 		case MovementType.walk:
 			if (faceRight)
-				transform.parent.rigidbody.velocity = new Vector3 (walkSpeed, 0, 0);
+				transform.parent.rigidbody.velocity = new Vector3 (walkSpeed, 0, 0); 
 			else
 				transform.parent.rigidbody.velocity = new Vector3 (-walkSpeed, 0, 0);
 
@@ -102,9 +105,9 @@ public class Movement : MonoBehaviour
 
 		case MovementType.run:
 			if (faceRight)
-				transform.parent.rigidbody.velocity = new Vector3 (runSpeed, 0, 0);
+				transform.parent.rigidbody.velocity = new Vector3 (runSpeed, 0, 0) * Time.deltaTime;
 			else 
-				transform.parent.rigidbody.velocity = new Vector3 (-runSpeed, 0, 0);
+				transform.parent.rigidbody.velocity = new Vector3 (-runSpeed, 0, 0) * Time.deltaTime;
 			break;
 
 		case MovementType.jump:
@@ -122,7 +125,28 @@ public class Movement : MonoBehaviour
 				transform.parent.rotation = Quaternion.Euler (new Vector3 (0, 0, rot));
 				transform.parent.position -= transform.right * Time.deltaTime * flySpeed;
 			}
+
 			break;
+
+		case MovementType.flyAscend:
+
+							//convert rot to suitable speed value
+		    float ascendSpeed = getPitchAngle / 10;
+			transform.parent.rigidbody.velocity  = new Vector3(0, ascendSpeed,0 );
+
+
+
+			break;
+
+	   case MovementType.flyDescend:
+		//convert rot to suitable speed value
+			float descentSpeed = getPitchAngle / 10 * -1;
+		
+			transform.parent.rigidbody.velocity = new Vector3(0, descentSpeed,0 );
+		break;
+
+		
+
 		default:
 			// unknown type! 
 			// there should probably be some error-handling
