@@ -21,32 +21,6 @@ public class testFly : MonoBehaviour
 		}
 	}
 
-	public Hand GetLeftMostHand (Frame f)
-	{
-		float smallestVal = float.MaxValue;
-		Hand h = null;
-		for (int i = 0; i < f.Hands.Count; ++i) {
-			if (f.Hands [i].PalmPosition.ToUnity ().x < smallestVal) {
-				smallestVal = f.Hands [i].PalmPosition.ToUnity ().x;
-				h = f.Hands [i];
-			}
-		}
-		return h;
-	}
-
-	public Hand GetRightMostHand (Frame f)
-	{
-		float largestVal = -float.MaxValue;
-		Hand h = null;
-		for (int i = 0; i < f.Hands.Count; ++i) {
-			if (f.Hands [i].PalmPosition.ToUnity ().x > largestVal) {
-				largestVal = f.Hands [i].PalmPosition.ToUnity ().x;
-				h = f.Hands [i];
-			}
-		}
-		return h;
-	}
-
 	void assignHands (Frame frame, Hand leftHand, Hand rightHand)
 	{
 		//if left hand overlaps right hand left hand acts as right
@@ -65,15 +39,10 @@ public class testFly : MonoBehaviour
 	void FixedUpdate ()
 	{
 		Frame frame = m_leapController.Frame ();
-		Hand leftHand = GetLeftMostHand (frame);
-		Hand rightHand = GetRightMostHand (frame);
 
 		Hand hand = frame.Hands.Leftmost;
-
 		HandList hList = frame.Hands;
-
-
-
+		
 		//NOTE: IF using right hand for flying Angles will be WEIRD
 		//NOTE: Flip your right hand upside down confuses it for LEFT!
 
@@ -87,7 +56,7 @@ public class testFly : MonoBehaviour
 			if (hList[0] != null) { //if hand is not over LeapMotion == null
 			
 			//	Time.timeScale = 1.0f;
-				gesture.HandPlayerMovement (frame, rightHand, m_leapController);
+				gesture.HandPlayerMovement (frame, hList[0], m_leapController);
 			}
 		} else {
 

@@ -51,18 +51,17 @@ public class LeapGesture : MonoBehaviour
 		//The normal vector to the palm.
 		//If your hand is flat, this vector will point downward, or “out” of the front surface of your palm.
 
-
 		float pitch = hand.Direction.Pitch;
 		float yaw = hand.Direction.Yaw;
-		float roll = hand.Direction.Roll;
+		float roll = hand.PalmNormal.Roll;
 
 		pitchDegrees = ToDegrees (pitch);
 		yawDegrees = ToDegrees (yaw);
 		rollDegrees = ToDegrees (roll);
 		
-	Debug.Log ("Pitch: " + pitchDegrees);
-//		Debug.Log ("Yaw: " + yawDegrees);
-//		Debug.Log ("Roll: " + rollDegrees);
+	   //Debug.Log ("Pitch: " + pitchDegrees);
+		//Debug.Log ("Yaw: " + yawDegrees);
+		//Debug.Log ("Roll: " + rollDegrees);
 	}
 
 	public void HandPlayerMovement (Frame frame, Hand hand, Controller controller)
@@ -77,14 +76,6 @@ public class LeapGesture : MonoBehaviour
 
 		if (yawDegrees <= 50 && yawDegrees >= -50) {
 		
-			if (rollDegrees >= 90) {
-				type = MovementType.walk;
-				movement.CheckMovementType (type, true);
-			} else
-			if (rollDegrees <= -90) {
-				type = MovementType.walk;
-				movement.CheckMovementType (type, false);
-			} else
 			if (rollDegrees >= -70 || rollDegrees <= 70 || !hand.IsValid) {
 				type = MovementType.stand;
 				movement.CheckMovementType (type, movement.getfaceRight);
@@ -92,46 +83,57 @@ public class LeapGesture : MonoBehaviour
 
 			//note: if we have up/down movement with pitch it'll collide with left/right gestures
 
-			if(pitchDegrees >= 10){
-				type = MovementType.flyAscend;
-				movement.CheckMovementType (type, movement.getfaceRight);
-				
-			}
-			else
-			if(pitchDegrees <= -10){
-				type = MovementType.flyDescend;
-				movement.CheckMovementType (type, movement.getfaceRight);
+//			if(pitchDegrees >= 10){
+//				type = MovementType.flyAscend;
+//				movement.CheckMovementType (type, movement.getfaceRight);
+//				
+//			}
+//			else
+//			if(pitchDegrees <= -10){
+//				type = MovementType.flyDescend;
+//				movement.CheckMovementType (type, movement.getfaceRight);
 
-			}
-
-		  
 		}
 	
 		//Jump code:
 
 		//Flying code: 
 
-		if (hand.IsLeft)
-		if (yawDegrees >= 70 && yawDegrees <= 110) {
-			type = MovementType.fly;
-			movement.getPitchAngle = pitchDegrees;
-			movement.CheckMovementType (type, true);
+		if (hand.IsLeft) {
+			Debug.Log ("FLY LEFT HAND");
+			if (yawDegrees >= 0 && yawDegrees <= 180) {
+				type = MovementType.fly;
+
+				if (pitchDegrees <= 45 && pitchDegrees >= -45) {
+					movement.getPitchAngle = pitchDegrees;
+					movement.CheckMovementType (type, true);
+				}
+
+				//Make sure angle doesn't exceed 45/-45 on pitch axis
+				if(pitchDegrees >= 45){
+					movement.getPitchAngle = 45;
+					movement.CheckMovementType (type, true);
+				}else if(pitchDegrees <= -45)
+				{
+					movement.getPitchAngle = -45;
+					movement.CheckMovementType (type, true);
+				}
+			}
 		}
 
 		if (hand.IsRight) {
-			if (yawDegrees <= -70 && yawDegrees >= -110) {
+			if (yawDegrees <= 0 && yawDegrees >= -180) {
+				if(pitchDegrees >= -45){
 				Debug.Log ("left fly hit");
 				type = MovementType.fly;
 				movement.CheckMovementType (type, false);
 				movement.getPitchAngle = pitchDegrees * -1;
+				}
 			}
-
-
-
 
 		}
 
-
+		//End of fly code.
 	}
 	
 	float ToDegrees (float Radian)

@@ -5,9 +5,6 @@ using Leap;
 public enum MovementType
 {
 	stand,
-	walk,
-	run,
-	jump,
 	fall,
 	fly,
 	flyAscend,
@@ -17,13 +14,10 @@ public enum MovementType
 
 public class Movement : MonoBehaviour
 {
-	
-	public float walkSpeed = 1.0f;
-	public float runSpeed = 2.0f;
 	public float flySpeed = 15.0f;
 	public float jumpPower = 1.0f;
 	public float fallPower = 1.0f;
-	public float rotationSpeed = 0.5f;
+	public float rotationSpeed = 3f;
 
 	[HideInInspector]
 	public bool getfaceRight { get; set; }
@@ -33,17 +27,8 @@ public class Movement : MonoBehaviour
 
 	[HideInInspector]
 	private float speed = 0.3f;
-	
-	// Use this for initialization
-	void Start ()
-	{
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
 
-	}
+
 	/// <summary>
 	/// Resets the rotation back to 0 
 	/// Doesn't just set back to 0, does it gradually over time (needs fixed as it appears it just sets it to 0)
@@ -55,19 +40,20 @@ public class Movement : MonoBehaviour
 
 		if (objZrot != 0) 
 		if (objZrot >= 0 && objZrot <= 100) {
-			tParam += Time.deltaTime * speed;
-			//transform.eulerAngles.z += Mathf.Lerp (transform.rotation.z, 0, tParam);
+			tParam = Time.deltaTime * speed;
 			float value = Mathf.Lerp(transform.rotation.z, 0, tParam);
 			transform.parent.rotation = Quaternion.Euler(new Vector3(0,0, value));
 		}
 		else if (objZrot >= 300 && objZrot <= 360) {
-			tParam += Time.deltaTime * speed;
+			tParam = Time.deltaTime * speed;
 			float value = Mathf.Lerp(transform.rotation.z, 0, tParam);
 			transform.parent.rotation = Quaternion.Euler(new Vector3(0,0, value));
-			//Debug.Log("VALUE: " + value);
 		}
 	}
-	
+
+	/// <summary>
+	/// Runs the appropriate code depending on the type of movement
+	/// </summary>
 	public void CheckMovementType (MovementType type, bool faceRight)
 	{
 		//Change 2D face direction to right/left
@@ -89,63 +75,33 @@ public class Movement : MonoBehaviour
 
 		case MovementType.stand:
 			transform.parent.rigidbody.velocity = new Vector3 (0, 0, 0);
-
-			resetRotation();
-
+			resetRotation ();
 			break;
+
+		//Flying code below:
 		
-		case MovementType.walk:
-			if (faceRight)
-				transform.parent.rigidbody.velocity = new Vector3 (walkSpeed, 0, 0); 
-			else
-				transform.parent.rigidbody.velocity = new Vector3 (-walkSpeed, 0, 0);
-
-			resetRotation();
-			break;
-
-		case MovementType.run:
-			if (faceRight)
-				transform.parent.rigidbody.velocity = new Vector3 (runSpeed, 0, 0) * Time.deltaTime;
-			else 
-				transform.parent.rigidbody.velocity = new Vector3 (-runSpeed, 0, 0) * Time.deltaTime;
-			break;
-
-		case MovementType.jump:
-			if (faceRight)
-				transform.parent.rigidbody.velocity = new Vector3 (0, jumpPower, 0);
-			break;
-
 		case MovementType.fly: 
 			if (faceRight) {
 				float rot = getPitchAngle * rotationSpeed;
-				transform.parent.rotation = Quaternion.Euler (new Vector3 (0, 0, rot));
+				Debug.Log("ROT SPEED: " + rot);
+				transform.parent.rotation = Quaternion.Euler (new Vector3 (0, 0, rot) * Time.deltaTime * rotationSpeed);
 				transform.parent.position += transform.right * Time.deltaTime * flySpeed;
-			} else {
+			} else { //facing left
 				float rot = getPitchAngle * rotationSpeed;
-				transform.parent.rotation = Quaternion.Euler (new Vector3 (0, 0, rot));
+				transform.parent.rotation = Quaternion.Euler (new Vector3 (0, 0, rot) * Time.deltaTime * rotationSpeed);
 				transform.parent.position -= transform.right * Time.deltaTime * flySpeed;
 			}
-
 			break;
 
 		case MovementType.flyAscend:
-
-							//convert rot to suitable speed value
-		    float ascendSpeed = getPitchAngle / 10;
-			transform.parent.rigidbody.velocity  = new Vector3(0, ascendSpeed,0 );
-
-
-
+			float ascendSpeed = getPitchAngle / 10;
+			transform.parent.rigidbody.velocity = new Vector3 (0, ascendSpeed, 0);
 			break;
 
-	   case MovementType.flyDescend:
-		//convert rot to suitable speed value
-			float descentSpeed = getPitchAngle / 10 * -1;
-		
-			transform.parent.rigidbody.velocity = new Vector3(0, descentSpeed,0 );
-		break;
-
-		
+		case MovementType.flyDescend:
+			float descentSpeed = getPitchAngle / 10 * -1;		
+			transform.parent.rigidbody.velocity = new Vector3 (0, descentSpeed, 0);
+			break;
 
 		default:
 			// unknown type! 
@@ -154,4 +110,26 @@ public class Movement : MonoBehaviour
 			break;
 		}
 	}
+
+	/// <summary>
+	/// if the player changes say from -45 to 20 within a split second, the game will slowly increment -45 to 20 over time so 
+	/// that the player's angle isn't automatically changed to 20.
+	/// </summary>
+	public void gradualChange()
+	{
+		float currentAngle;
+		float prevAngle = 0.0f;
+
+		currentAngle = getPitchAngle;
+
+		float sum = currentAngle - prevAngle;
+
+		if (sum >= 1) {
+
+
+		}
+
+	}
+
+
 }
