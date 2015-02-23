@@ -55,7 +55,7 @@ public class testFly : MonoBehaviour
 
 			if (hList[0] != null) { //if hand is not over LeapMotion == null
 			
-			//	Time.timeScale = 1.0f;
+				//	Time.timeScale = 1.0f;
 				gesture.HandPlayerMovement (frame, hList[0], m_leapController);
 			}
 		} else {

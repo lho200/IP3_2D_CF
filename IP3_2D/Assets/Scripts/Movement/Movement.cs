@@ -86,21 +86,22 @@ public class Movement : MonoBehaviour
 				transform.parent.position += transform.right * Time.deltaTime * flySpeed;
 			} else { //facing left
 				float rot = getPitchAngle * Time.deltaTime * rotationSpeed;
+				rot = rot * -1;
 				transform.parent.rotation = Quaternion.Euler (new Vector3 (0, 0, rot));
 				transform.parent.position -= transform.right * Time.deltaTime * flySpeed;
 			}
 			break;
 
 		case MovementType.flyAscend:
-			//Check if player standing, we can move UP/DOWN
-
+			Debug.Log("angle: " + getPitchAngle);
 			float ascendSpeed = getPitchAngle / 10;
+			//Debug.Log("acs speed: " + ascendSpeed);
 			transform.parent.rigidbody.velocity = new Vector3 (0, ascendSpeed, 0);
 			break;
 
 		case MovementType.flyDescend:
-			float descentSpeed = getPitchAngle / 10 * -1;		
-			transform.parent.rigidbody.velocity = new Vector3 (0, descentSpeed, 0);
+			float descentSpeed = getPitchAngle / 10;		
+			transform.parent.rigidbody.velocity = new Vector3 (0, -descentSpeed, 0);
 			break;
 
 		default:
@@ -121,14 +122,10 @@ public class Movement : MonoBehaviour
 		float prevAngle = 0.0f;
 
 		currentAngle = getPitchAngle;
-
 		float sum = currentAngle - prevAngle;
 
 		if (sum >= 1) {
-
-
 		}
-
 	}
 
 

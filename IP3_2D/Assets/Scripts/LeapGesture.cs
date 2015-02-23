@@ -59,8 +59,8 @@ public class LeapGesture : MonoBehaviour
 		yawDegrees = yaw * Mathf.Rad2Deg;
 		rollDegrees = roll * Mathf.Rad2Deg;;
 		
-	   Debug.Log ("Pitch: " + pitchDegrees);
-		//Debug.Log ("Yaw: " + yawDegrees);
+	    Debug.Log ("Pitch: " + pitchDegrees);
+		Debug.Log ("Yaw: " + yawDegrees);
 		//Debug.Log ("Roll: " + rollDegrees);
 	}
 
@@ -74,20 +74,37 @@ public class LeapGesture : MonoBehaviour
 
 		//Hand rotation for left/right movement below:
 
-		if (yawDegrees <= 40 && yawDegrees >= -40) {
+
+		//Commented below is if hand is in fist.
+//		float strength = hand.GrabStrength;
+//		
+//		if(strength == 1)
+//			Debug.Log("FIST");
+
+//		if (hand == null) {
+//			Debug.Log("NOT null");
+//			type = MovementType.stand;
+//			movement.CheckMovementType (type, movement.getfaceRight);
+//		}
+
+		if (yawDegrees >= -20 && yawDegrees <= 20) {
 		
-			if (rollDegrees >= -100 || rollDegrees <= 100 || !hand.IsValid) {
+			if (rollDegrees >= -100 && rollDegrees <= 100) {
 				type = MovementType.stand;
 				movement.CheckMovementType (type, movement.getfaceRight);
 			}
 
 			//note: if we have up/down movement with pitch it'll collide with left/right gestures
-			//note: since pitch goes to negative it makes our speed negative :/
 
-			if(pitchDegrees <= 45 && pitchDegrees <= -45){
-				type = MovementType.flyAscend;
-				movement.CheckMovementType (type, movement.getfaceRight);
-			}
+
+
+			//note: since pitch goes to negative it makes our speed negative :/
+			//note: since our Flying code sets pitch to 45, this code will not work correctly unless we resolve this someway
+
+//			if(pitchDegrees <= 45 && pitchDegrees <= -45){
+//				type = MovementType.flyAscend;
+//				movement.CheckMovementType (type, movement.getfaceRight);
+//			}
 		}
 	
 		//Flying code: 
@@ -95,26 +112,25 @@ public class LeapGesture : MonoBehaviour
 		//note: In order to start flying, hand's pitch must be around 10 & -10 degrees? (yet to be decided)
 
 		if (hand.IsLeft) {
-			Debug.Log ("FLY LEFT HAND");
-			if (yawDegrees >= 40 && yawDegrees <= 180) {
+			if (yawDegrees >= 45 && yawDegrees <= 180) {
 				type = MovementType.fly;
 
 				if (pitchDegrees <= 45 && pitchDegrees >= -45) {
 					movement.getPitchAngle = pitchDegrees;
 					movement.CheckMovementType (type, true);
-				}
+				}else
 				CheckAngle(type,hand, true);
 			}
 		}
 
 		if (hand.IsRight) {
-			if (yawDegrees <= -40 && yawDegrees >= -180) {
+			if (yawDegrees <= -45 && yawDegrees >= -180) {
 				type = MovementType.fly;
 
 				if(pitchDegrees <= 45 && pitchDegrees >= -45){
-				movement.getPitchAngle = pitchDegrees * -1;
+				movement.getPitchAngle = pitchDegrees;
 				movement.CheckMovementType (type, false);
-				}
+				}else
 				CheckAngle(type,hand, false);
 			}
 		}
@@ -128,19 +144,11 @@ public class LeapGesture : MonoBehaviour
 	{
 		if(pitchDegrees >= 45)
 		{
-			if(hand.IsLeft)
 			movement.getPitchAngle = 45;
-			else
-			movement.getPitchAngle = -45;
-
 			movement.CheckMovementType (type, direction);
 		}else if(pitchDegrees <= -45)
 		{			
-			if(hand.IsLeft)
-				movement.getPitchAngle = -45;
-			else
-				movement.getPitchAngle = 45;
-
+			movement.getPitchAngle = -45;
 			movement.CheckMovementType (type, direction);
 		}
 	}
