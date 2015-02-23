@@ -74,25 +74,20 @@ public class LeapGesture : MonoBehaviour
 
 		//Hand rotation for left/right movement below:
 
-		if (yawDegrees <= 50 && yawDegrees >= -50) {
+		if (yawDegrees <= 40 && yawDegrees >= -40) {
 		
-			if (rollDegrees >= -70 || rollDegrees <= 70 || !hand.IsValid) {
+			if (rollDegrees >= -100 || rollDegrees <= 100 || !hand.IsValid) {
 				type = MovementType.stand;
 				movement.CheckMovementType (type, movement.getfaceRight);
 			}
 
 			//note: if we have up/down movement with pitch it'll collide with left/right gestures
+			//note: since pitch goes to negative it makes our speed negative :/
 
-//			if(pitchDegrees >= 10){
-//				type = MovementType.flyAscend;
-//				movement.CheckMovementType (type, movement.getfaceRight);
-//				
-//			}
-//			else
-//			if(pitchDegrees <= -10){
-//				type = MovementType.flyDescend;
-//				movement.CheckMovementType (type, movement.getfaceRight);
-
+			if(pitchDegrees <= 45 && pitchDegrees <= -45){
+				type = MovementType.flyAscend;
+				movement.CheckMovementType (type, movement.getfaceRight);
+			}
 		}
 	
 		//Flying code: 
@@ -108,7 +103,7 @@ public class LeapGesture : MonoBehaviour
 					movement.getPitchAngle = pitchDegrees;
 					movement.CheckMovementType (type, true);
 				}
-				CheckAngle2(type,hand, true);
+				CheckAngle(type,hand, true);
 			}
 		}
 
@@ -120,30 +115,17 @@ public class LeapGesture : MonoBehaviour
 				movement.getPitchAngle = pitchDegrees * -1;
 				movement.CheckMovementType (type, false);
 				}
-				CheckAngle2(type,hand, false);
+				CheckAngle(type,hand, false);
 			}
 		}
 		//End of fly code.
 	}
 
-	void CheckAngle(MovementType type, bool direction){
-	
-		//Make sure angle doesn't exceed 45/-45 on pitch axis
-		if(pitchDegrees >= 45)
-		{
-			movement.getPitchAngle = 45;
-			movement.CheckMovementType (type, direction);
-		}else if(pitchDegrees <= -45)
-		{			
-			movement.getPitchAngle = -45;
-			movement.CheckMovementType (type, direction);
-		}
-	}
-
-	void CheckAngle2(MovementType type, Hand hand, bool direction){
-		
-		//Make sure angle doesn't exceed 45/-45 on pitch axis
-
+	/// <summary>
+	/// Make sure angle doesn't exceed 45/-45 on pitch axis
+	/// </summary>
+	void CheckAngle(MovementType type, Hand hand, bool direction)
+	{
 		if(pitchDegrees >= 45)
 		{
 			if(hand.IsLeft)
