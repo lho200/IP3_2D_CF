@@ -9,15 +9,14 @@ public enum MovementType
 	fly,
 	flyAscend,
 	flyDescend
-}
-;
+};
 
 public class Movement : MonoBehaviour
 {
 	public float flySpeed = 15.0f;
 	public float jumpPower = 1.0f;
 	public float fallPower = 1.0f;
-	public float rotationSpeed = 3f;
+	public float rotationSpeed = 5.0f;
 
 	[HideInInspector]
 	public bool getfaceRight { get; set; }
@@ -82,18 +81,19 @@ public class Movement : MonoBehaviour
 		
 		case MovementType.fly: 
 			if (faceRight) {
-				float rot = getPitchAngle * rotationSpeed;
-				Debug.Log("ROT SPEED: " + rot);
-				transform.parent.rotation = Quaternion.Euler (new Vector3 (0, 0, rot) * Time.deltaTime * rotationSpeed);
+				float rot = getPitchAngle * Time.deltaTime * rotationSpeed;
+				transform.parent.rotation = Quaternion.Euler (new Vector3 (0, 0, rot));
 				transform.parent.position += transform.right * Time.deltaTime * flySpeed;
 			} else { //facing left
-				float rot = getPitchAngle * rotationSpeed;
-				transform.parent.rotation = Quaternion.Euler (new Vector3 (0, 0, rot) * Time.deltaTime * rotationSpeed);
+				float rot = getPitchAngle * Time.deltaTime * rotationSpeed;
+				transform.parent.rotation = Quaternion.Euler (new Vector3 (0, 0, rot));
 				transform.parent.position -= transform.right * Time.deltaTime * flySpeed;
 			}
 			break;
 
 		case MovementType.flyAscend:
+			//Check if player standing, we can move UP/DOWN
+
 			float ascendSpeed = getPitchAngle / 10;
 			transform.parent.rigidbody.velocity = new Vector3 (0, ascendSpeed, 0);
 			break;

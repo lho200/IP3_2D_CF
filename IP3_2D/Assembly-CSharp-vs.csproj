@@ -80,6 +80,8 @@
      <Compile Include="Assets\Scripts\Powerups\IPowerups.cs" />
      <Compile Include="Assets\Scripts\Powerups\SpeedBoost.cs" />
      <Compile Include="Assets\Scripts\World\Spawn.cs" />
+     <Compile Include="Assets\Scripts\World\attack.cs" />
+     <Compile Include="Assets\Scripts\World\cannonball.cs" />
      <Compile Include="Assets\Scripts\follow.cs" />
      <Compile Include="Assets\Scripts\testFly.cs" />
  <Reference Include="UnityEngine.UI">

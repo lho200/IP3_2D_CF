@@ -37,9 +37,9 @@ public class LeapGesture : MonoBehaviour
 		float rotationY = _frame.RotationAngle (prevFrame, Vector.YAxis);
 		float rotationZ = _frame.RotationAngle (prevFrame, Vector.ZAxis);
 
-		degreeX = ToDegrees (rotationX);
-		degreeY = ToDegrees (rotationY);
-		degreeZ = ToDegrees (rotationZ);
+		degreeX = rotationX * Mathf.Rad2Deg;
+		degreeY = rotationY * Mathf.Rad2Deg;
+		degreeZ = rotationZ * Mathf.Rad2Deg;
 	
 //		Debug.Log ("X DEGREE: " + degreeX);
 //		Debug.Log ("Y DEGREE: " + degreeY);
@@ -55,11 +55,11 @@ public class LeapGesture : MonoBehaviour
 		float yaw = hand.Direction.Yaw;
 		float roll = hand.PalmNormal.Roll;
 
-		pitchDegrees = ToDegrees (pitch);
-		yawDegrees = ToDegrees (yaw);
-		rollDegrees = ToDegrees (roll);
+		pitchDegrees = pitch * Mathf.Rad2Deg;
+		yawDegrees = yaw * Mathf.Rad2Deg;
+		rollDegrees = roll * Mathf.Rad2Deg;;
 		
-	   //Debug.Log ("Pitch: " + pitchDegrees);
+	   Debug.Log ("Pitch: " + pitchDegrees);
 		//Debug.Log ("Yaw: " + yawDegrees);
 		//Debug.Log ("Roll: " + rollDegrees);
 	}
@@ -95,51 +95,71 @@ public class LeapGesture : MonoBehaviour
 
 		}
 	
-		//Jump code:
-
 		//Flying code: 
+
+		//note: In order to start flying, hand's pitch must be around 10 & -10 degrees? (yet to be decided)
 
 		if (hand.IsLeft) {
 			Debug.Log ("FLY LEFT HAND");
-			if (yawDegrees >= 0 && yawDegrees <= 180) {
+			if (yawDegrees >= 40 && yawDegrees <= 180) {
 				type = MovementType.fly;
 
 				if (pitchDegrees <= 45 && pitchDegrees >= -45) {
 					movement.getPitchAngle = pitchDegrees;
 					movement.CheckMovementType (type, true);
 				}
-
-				//Make sure angle doesn't exceed 45/-45 on pitch axis
-				if(pitchDegrees >= 45){
-					movement.getPitchAngle = 45;
-					movement.CheckMovementType (type, true);
-				}else if(pitchDegrees <= -45)
-				{
-					movement.getPitchAngle = -45;
-					movement.CheckMovementType (type, true);
-				}
+				CheckAngle2(type,hand, true);
 			}
 		}
 
 		if (hand.IsRight) {
-			if (yawDegrees <= 0 && yawDegrees >= -180) {
-				if(pitchDegrees >= -45){
-				Debug.Log ("left fly hit");
+			if (yawDegrees <= -40 && yawDegrees >= -180) {
 				type = MovementType.fly;
-				movement.CheckMovementType (type, false);
+
+				if(pitchDegrees <= 45 && pitchDegrees >= -45){
 				movement.getPitchAngle = pitchDegrees * -1;
+				movement.CheckMovementType (type, false);
 				}
+				CheckAngle2(type,hand, false);
 			}
-
 		}
-
 		//End of fly code.
 	}
+
+	void CheckAngle(MovementType type, bool direction){
 	
-	float ToDegrees (float Radian)
-	{
-		float Degrees;
-		Degrees = Radian * 180 / Mathf.PI;
-		return Degrees;
+		//Make sure angle doesn't exceed 45/-45 on pitch axis
+		if(pitchDegrees >= 45)
+		{
+			movement.getPitchAngle = 45;
+			movement.CheckMovementType (type, direction);
+		}else if(pitchDegrees <= -45)
+		{			
+			movement.getPitchAngle = -45;
+			movement.CheckMovementType (type, direction);
+		}
+	}
+
+	void CheckAngle2(MovementType type, Hand hand, bool direction){
+		
+		//Make sure angle doesn't exceed 45/-45 on pitch axis
+
+		if(pitchDegrees >= 45)
+		{
+			if(hand.IsLeft)
+			movement.getPitchAngle = 45;
+			else
+			movement.getPitchAngle = -45;
+
+			movement.CheckMovementType (type, direction);
+		}else if(pitchDegrees <= -45)
+		{			
+			if(hand.IsLeft)
+				movement.getPitchAngle = -45;
+			else
+				movement.getPitchAngle = 45;
+
+			movement.CheckMovementType (type, direction);
+		}
 	}
 }
