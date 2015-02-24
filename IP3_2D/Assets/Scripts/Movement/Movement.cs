@@ -8,7 +8,8 @@ public enum MovementType
 	fall,
 	fly,
 	flyAscend,
-	flyDescend
+	flyDescend,
+	fire
 };
 
 public class Movement : MonoBehaviour
@@ -16,7 +17,7 @@ public class Movement : MonoBehaviour
 	public float flySpeed = 15.0f;
 	public float jumpPower = 1.0f;
 	public float fallPower = 1.0f;
-	public float rotationSpeed = 5.0f;
+	public float rotationSpeed = 1.0f;
 
 	[HideInInspector]
 	public bool getfaceRight { get; set; }
@@ -26,8 +27,7 @@ public class Movement : MonoBehaviour
 
 	[HideInInspector]
 	private float speed = 0.3f;
-
-
+	
 	/// <summary>
 	/// Resets the rotation back to 0 
 	/// Doesn't just set back to 0, does it gradually over time (needs fixed as it appears it just sets it to 0)
@@ -64,7 +64,7 @@ public class Movement : MonoBehaviour
 			Debug.Log ("FACERIGHT");
 			transform.localScale = new Vector3 (1f, 1f, 1f); 
 		} else {
-			Debug.Log ("NOT FACERIGHT");
+			Debug.Log ("FACELEFT");
 			transform.localScale = new Vector3 (-1f, 1f, 1f);
 		}
 		
@@ -80,14 +80,13 @@ public class Movement : MonoBehaviour
 		//Flying code below:
 		
 		case MovementType.fly: 
+			float rot = getPitchAngle * Time.deltaTime * rotationSpeed;
+
 			if (faceRight) {
-				float rot = getPitchAngle * Time.deltaTime * rotationSpeed;
-				transform.parent.rotation = Quaternion.Euler (new Vector3 (0, 0, rot));
+				transform.parent.Rotate(0,0, rot);
 				transform.parent.position += transform.right * Time.deltaTime * flySpeed;
 			} else { //facing left
-				float rot = getPitchAngle * Time.deltaTime * rotationSpeed;
-				rot = rot * -1;
-				transform.parent.rotation = Quaternion.Euler (new Vector3 (0, 0, rot));
+				transform.parent.Rotate(0,0, -rot);
 				transform.parent.position -= transform.right * Time.deltaTime * flySpeed;
 			}
 			break;
@@ -95,13 +94,17 @@ public class Movement : MonoBehaviour
 		case MovementType.flyAscend:
 			Debug.Log("angle: " + getPitchAngle);
 			float ascendSpeed = getPitchAngle / 10;
-			//Debug.Log("acs speed: " + ascendSpeed);
+			Debug.Log("acs speed: " + ascendSpeed);
 			transform.parent.rigidbody.velocity = new Vector3 (0, ascendSpeed, 0);
 			break;
 
 		case MovementType.flyDescend:
 			float descentSpeed = getPitchAngle / 10;		
 			transform.parent.rigidbody.velocity = new Vector3 (0, -descentSpeed, 0);
+			break;
+		case MovementType.fire:
+			//fire code goes here
+
 			break;
 
 		default:

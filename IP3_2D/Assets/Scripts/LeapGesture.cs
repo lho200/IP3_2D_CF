@@ -16,6 +16,7 @@ public class LeapGesture : MonoBehaviour
 	public Controller m_leapController { get; set; }
 
 	private Movement movement;
+	private float fixedAngle = 90.0f;
 
 	// Use this for initialization
 	void Start ()
@@ -58,7 +59,7 @@ public class LeapGesture : MonoBehaviour
 		pitchDegrees = pitch * Mathf.Rad2Deg;
 		yawDegrees = yaw * Mathf.Rad2Deg;
 		rollDegrees = roll * Mathf.Rad2Deg;;
-		
+
 	    Debug.Log ("Pitch: " + pitchDegrees);
 		Debug.Log ("Yaw: " + yawDegrees);
 		//Debug.Log ("Roll: " + rollDegrees);
@@ -106,20 +107,24 @@ public class LeapGesture : MonoBehaviour
 //				movement.CheckMovementType (type, movement.getfaceRight);
 //			}
 		}
+
+
+
 	
 		//Flying code: 
 
 		//note: In order to start flying, hand's pitch must be around 10 & -10 degrees? (yet to be decided)
 
-		if (hand.IsLeft) {
+		if (hand.IsLeft) { //Weird movement compared to Left movement
+
 			if (yawDegrees >= 45 && yawDegrees <= 180) {
 				type = MovementType.fly;
 
-				if (pitchDegrees <= 45 && pitchDegrees >= -45) {
+				if (pitchDegrees <= fixedAngle && pitchDegrees >= -fixedAngle) {
 					movement.getPitchAngle = pitchDegrees;
 					movement.CheckMovementType (type, true);
-				}else
-				CheckAngle(type,hand, true);
+				}//else
+				//CheckAngle(type, true);
 			}
 		}
 
@@ -127,11 +132,11 @@ public class LeapGesture : MonoBehaviour
 			if (yawDegrees <= -45 && yawDegrees >= -180) {
 				type = MovementType.fly;
 
-				if(pitchDegrees <= 45 && pitchDegrees >= -45){
+				if(pitchDegrees <= fixedAngle && pitchDegrees >= -fixedAngle){
 				movement.getPitchAngle = pitchDegrees;
 				movement.CheckMovementType (type, false);
-				}else
-				CheckAngle(type,hand, false);
+				}//else
+				//CheckAngle(type, false);
 			}
 		}
 		//End of fly code.
@@ -140,15 +145,15 @@ public class LeapGesture : MonoBehaviour
 	/// <summary>
 	/// Make sure angle doesn't exceed 45/-45 on pitch axis
 	/// </summary>
-	void CheckAngle(MovementType type, Hand hand, bool direction)
+	void CheckAngle(MovementType type, bool direction)
 	{
-		if(pitchDegrees >= 45)
+		if(pitchDegrees >= fixedAngle)
 		{
-			movement.getPitchAngle = 45;
+			movement.getPitchAngle = fixedAngle;
 			movement.CheckMovementType (type, direction);
-		}else if(pitchDegrees <= -45)
+		}else if(pitchDegrees <= -fixedAngle)
 		{			
-			movement.getPitchAngle = -45;
+			movement.getPitchAngle = -fixedAngle;
 			movement.CheckMovementType (type, direction);
 		}
 	}
