@@ -1,10 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Movement\Movement.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\hit.cs">
     <Files>
-      <File FileName="Assets\Scripts\testFly.cs" Line="1" Column="1" />
+      <File FileName="Assets\hit.cs" Line="35" Column="5" />
+      <File FileName="Assets\Scripts\testFly.cs" Line="56" Column="4" />
       <File FileName="Assets\Scripts\Movement\Movement.cs" Line="88" Column="26" />
-      <File FileName="Assets\Scripts\LeapGesture.cs" Line="111" Column="3" />
+      <File FileName="Assets\Scripts\LeapGesture.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -13,10 +14,9 @@
             <Node name="Scripts" expanded="True">
               <Node name="Leapmotion" expanded="True" />
               <Node name="Menu" expanded="True" />
-              <Node name="Movement" expanded="True">
-                <Node name="Movement.cs" selected="True" />
-              </Node>
+              <Node name="Movement" expanded="True" />
             </Node>
+            <Node name="hit.cs" selected="True" />
           </Node>
         </State>
       </Pad>
