@@ -46,6 +46,10 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Boss\bossAttack.cs" />
+     <Compile Include="Assets\Scripts\Boss\cameraFollow.cs" />
+     <Compile Include="Assets\Scripts\Boss\move.cs" />
+     <Compile Include="Assets\Scripts\Boss\setup.cs" />
      <Compile Include="Assets\Scripts\Equipment\Items.cs" />
      <Compile Include="Assets\Scripts\HandCycler.cs" />
      <Compile Include="Assets\Scripts\LeapFly.cs" />
