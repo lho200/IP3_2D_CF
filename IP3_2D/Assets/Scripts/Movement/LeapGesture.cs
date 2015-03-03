@@ -17,6 +17,7 @@ public class LeapGesture : MonoBehaviour
 
 	private Movement movement;
 	private float fixedAngle = 90.0f;
+	private float fixedAngle2 = 45.0f;
 
 	// Use this for initialization
 	void Start ()
@@ -60,8 +61,8 @@ public class LeapGesture : MonoBehaviour
 		yawDegrees = yaw * Mathf.Rad2Deg;
 		rollDegrees = roll * Mathf.Rad2Deg;;
 
-	    Debug.Log ("Pitch: " + pitchDegrees);
-		Debug.Log ("Yaw: " + yawDegrees);
+	 //   Debug.Log ("Pitch: " + pitchDegrees);
+//		Debug.Log ("Yaw: " + yawDegrees);
 		//Debug.Log ("Roll: " + rollDegrees);
 	}
 
@@ -123,7 +124,8 @@ public class LeapGesture : MonoBehaviour
 				if (pitchDegrees <= fixedAngle && pitchDegrees >= -fixedAngle) {
 					movement.getPitchAngle = pitchDegrees;
 					movement.CheckMovementType (type, true);
-				}//else
+				}
+
 				//CheckAngle(type, true);
 			}
 		}
@@ -135,26 +137,29 @@ public class LeapGesture : MonoBehaviour
 				if(pitchDegrees <= fixedAngle && pitchDegrees >= -fixedAngle){
 				movement.getPitchAngle = pitchDegrees;
 				movement.CheckMovementType (type, false);
-				}//else
+				}
+
 				//CheckAngle(type, false);
+
 			}
 		}
-		//End of fly code.
 	}
 
 	/// <summary>
-	/// Make sure angle doesn't exceed 45/-45 on pitch axis
+	/// Makes sure angle doesn't exceed 45/-45 on pitch axis
 	/// </summary>
 	void CheckAngle(MovementType type, bool direction)
 	{
-		if(pitchDegrees >= fixedAngle)
+		if(pitchDegrees > fixedAngle)
 		{
-			movement.getPitchAngle = fixedAngle;
-			movement.CheckMovementType (type, direction);
-		}else if(pitchDegrees <= -fixedAngle)
+			Debug.Log ("greater");
+			movement.getPitchAngle = fixedAngle2;
+			//movement.CheckMovementType (type, direction);
+		}else if(pitchDegrees < -fixedAngle)
 		{			
-			movement.getPitchAngle = -fixedAngle;
-			movement.CheckMovementType (type, direction);
+			print ("lower");
+			movement.getPitchAngle = -fixedAngle2;
+			//movement.CheckMovementType (type, direction);
 		}
 	}
 }

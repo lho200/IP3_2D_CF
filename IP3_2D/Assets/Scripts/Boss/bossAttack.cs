@@ -1,58 +1,91 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public enum attackTypes{
+public enum attackTypes
+{
 	singleFire,
 	multipleShots,
 	spreadShot,
 	superAttack
-};
+}
+;
 
-public class bossAttack : MonoBehaviour {
+public class bossAttack : MonoBehaviour
+{
 
 	public Rigidbody2D attackPrefab;
+	Rigidbody2D attackInstance;
+
 	attackTypes bossAttackTypes;
 
-
 	Vector3 playerPos;
+	public float startGameDelay = 10.0f;
+	public float shotDelay = 10.0f;
+	public float shotSpeed = 5.0f;
+	float timeElapsed;
+	float lastStateCheck = 0f;
+	public float defaultDelay = 2.0f;
 
-	public float fireDelay = 10.0f;
-	public float fireSpeed = 1.0f;
-
-	int shotCount;
+	//deals with how often boss fires type of shot
+	float timeFrequency;
+	bool canFire;
+	public int shotCount = 5;
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
 	
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
+		timeElapsed = Time.time;
 
 		//anticipate player movement
 		//Should A.I know about map boundary? if so, fires below/above player
 		//when their near top/bottom of boundary
 
-		StartCoroutine (delayTimer (fireDelay));
+		StartCoroutine (delayTimer (startGameDelay));
 	}
 
-	IEnumerator delayTimer(float delayTimer){
-		yield return new WaitForSeconds(delayTimer);
+	IEnumerator delayTimer (float delayTimer)
+	{
+		yield return new WaitForSeconds (delayTimer);
 		spawnObject ();
 	}
 
-	void spawnObject(){
-		Vector3 bossPos = transform.position;
-		
-		Vector3 fireSpawn;
-		fireSpawn.x = bossPos.x;
-		fireSpawn.y = bossPos.y - 1;
-		fireSpawn.z = 0.0f;
+	void spawnObject ()
+	{
+		for (int i = 0; i < 5; i++) {
+			Debug.Log("value: " + i);
+		}
 
-		Rigidbody2D attackInstance = Instantiate (attackPrefab, fireSpawn, Quaternion.identity) as Rigidbody2D;
+		int count = 0;
+
+		if(count <= shotCount)
+			if (lastStateCheck + defaultDelay < timeElapsed) {
+		
+				count++;
+		
+				canFire = true;
+				Vector3 bossPos = transform.position;
+		
+				Vector3 fireSpawn;
+				fireSpawn.x = bossPos.x - 1;
+				fireSpawn.y = bossPos.y;
+				fireSpawn.z = 0.0f;
+
+				attackInstance = Instantiate (attackPrefab, fireSpawn, Quaternion.identity) as Rigidbody2D;
+				attackInstance.gravityScale = 0.0f;
+				attackInstance.velocity = (new Vector2 (-shotSpeed, 0));
+
+				lastStateCheck = timeElapsed;
+			} else
+				canFire = false;
 	}
 
-	void attackTypes()
+	void attackTypes ()
 	{
 		//other attack ideas:
 		//projectiles stop dead in their tracks, and starting floating down (spaces inbetween each projectile)
@@ -65,6 +98,10 @@ public class bossAttack : MonoBehaviour {
 		case global::attackTypes.singleFire:
 			//allocate shot counts?
 			shotCount = 1;
+			shotDelay = 1.0f;
+
+			attackInstance.velocity = new Vector2 (-shotSpeed, 0);
+
 
 			break;
 		case global::attackTypes.multipleShots:
@@ -75,6 +112,8 @@ public class bossAttack : MonoBehaviour {
 			//shotCount must be dividle by 3! 
 			//shotCount will fire projectiles straight, diagonally up and down 
 			shotCount = 15;
+
+
 
 			break;
 		case global::attackTypes.superAttack:

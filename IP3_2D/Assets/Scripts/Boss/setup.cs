@@ -31,7 +31,5 @@ public class setup : MonoBehaviour {
 
 		Vector3 newPlayerPos = cam.ScreenToWorldPoint (playerPos);
 		Vector3 newBossPos =  cam.ScreenToWorldPoint (bossPos);
-
-
 	}
 }

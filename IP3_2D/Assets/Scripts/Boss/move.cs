@@ -26,7 +26,7 @@ public class move : MonoBehaviour
 		//boss position on Y axis has to be somewhat near the players slight delay
 		float val = trackPlayer ();
 
-		bossPos.x = playerPos.x + 10;
+		bossPos.x = playerPos.x + 15;
 		bossPos.y = val;
 		transform.position = bossPos;
 	}

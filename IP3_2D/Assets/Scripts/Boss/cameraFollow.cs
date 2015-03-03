@@ -14,7 +14,7 @@ public class cameraFollow : MonoBehaviour {
 		Camera cam = GameObject.FindGameObjectWithTag ("MainCamera").gameObject.camera;
 
 		float playerPositionX = GameObject.FindGameObjectWithTag ("Player").transform.position.x;
-		Vector3 playerPos = new Vector3 (playerPositionX, 11, -5);
+		Vector3 playerPos = new Vector3 (playerPositionX + 4, 11, -5);
 		cam.transform.position = playerPos;
 	}
 }
