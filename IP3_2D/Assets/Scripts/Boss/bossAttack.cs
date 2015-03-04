@@ -30,6 +30,7 @@ public class bossAttack : MonoBehaviour
 	float timeFrequency;
 	bool canFire;
 	public int shotCount = 5;
+	private int currentCount = 0;
 
 	// Use this for initialization
 	void Start ()
@@ -57,32 +58,25 @@ public class bossAttack : MonoBehaviour
 
 	void spawnObject ()
 	{
-		for (int i = 0; i < 5; i++) {
-			Debug.Log("value: " + i);
-		}
-
-		int count = 0;
-
-		if(count <= shotCount)
+		if(currentCount <= shotCount)
 			if (lastStateCheck + defaultDelay < timeElapsed) {
-		
-				count++;
-		
-				canFire = true;
-				Vector3 bossPos = transform.position;
-		
-				Vector3 fireSpawn;
-				fireSpawn.x = bossPos.x - 1;
-				fireSpawn.y = bossPos.y;
-				fireSpawn.z = 0.0f;
 
-				attackInstance = Instantiate (attackPrefab, fireSpawn, Quaternion.identity) as Rigidbody2D;
-				attackInstance.gravityScale = 0.0f;
-				attackInstance.velocity = (new Vector2 (-shotSpeed, 0));
+			canFire = true;
+			Vector3 bossPos = transform.position;
+		
+			Vector3 fireSpawn;
+			fireSpawn.x = bossPos.x - 1;
+			fireSpawn.y = bossPos.y;
+			fireSpawn.z = 0.0f;
 
-				lastStateCheck = timeElapsed;
-			} else
-				canFire = false;
+			attackInstance = Instantiate (attackPrefab, fireSpawn, Quaternion.identity) as Rigidbody2D;
+			attackInstance.gravityScale = 0.0f;
+			attackInstance.velocity = (new Vector2 (-shotSpeed, 0));
+
+			currentCount++;
+			lastStateCheck = timeElapsed;
+		} else
+			canFire = false;
 	}
 
 	void attackTypes ()
@@ -113,7 +107,22 @@ public class bossAttack : MonoBehaviour
 			//shotCount will fire projectiles straight, diagonally up and down 
 			shotCount = 15;
 
+			float shotSpread = shotCount / 3;
 
+			if(shotCount == shotCount / 3){
+				
+				//attackInstance.rotation = new Vector3();
+			}
+
+			if(shotCount == (shotCount / 3) * 2){
+
+			}
+
+			if(shotCount == 15){
+
+			}
+
+			attackInstance.velocity = new Vector2 (-shotSpeed, 0);
 
 			break;
 		case global::attackTypes.superAttack:
